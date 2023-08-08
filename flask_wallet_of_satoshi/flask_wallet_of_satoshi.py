@@ -1,8 +1,8 @@
 from flask import jsonify
-from wallet_of_satoshi import WalletOfSatoshi
+from wallet_of_satoshi import WalletOfSatoshi as _WalletOfSatoshi
 
 
-class WoS:
+class WalletOfSatoshi:
     def __init__(self, app=None):
         self.app = app
         self.wallet = None
@@ -23,7 +23,7 @@ class WoS:
             return "", 500
 
         if not self.wallet:
-            self.wallet = WalletOfSatoshi(username)
+            self.wallet = _WalletOfSatoshi(username)
 
         lnurlp = self.wallet.well_known()
         return jsonify(lnurlp)

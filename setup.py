@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name="flask_wallet_of_satoshi",
     version="0.1",
-    packages=find_packages(),
+    packages=["flask_wallet_of_satoshi"],
     install_requires=[
         "Flask",
         "wallet_of_satoshi @ git+https://github.com/ajrlewis/wallet_of_satoshi.git",
