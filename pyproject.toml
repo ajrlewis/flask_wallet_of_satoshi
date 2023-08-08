@@ -1,0 +1,12 @@
+[project]
+name = "flask_wallet_of_satoshi"
+description = "Flask extension for Wallet of Satoshi"
+version = "0.1.0"
+readme = "README.md"
+authors = [
+    { name = "ajrlewis", email = "hello@ajrlewis.com" }
+]
+dependencies = [
+    "Flask >= 2.2.2",
+    "wallet_of_satoshi@git+https://github.com/arjlewis/wallet_of_satoshi",
+]
