@@ -8,5 +8,5 @@ authors = [
 ]
 dependencies = [
     "Flask >= 2.2.2",
-    "wallet_of_satoshi@git+https://github.com/arjlewis/wallet_of_satoshi",
+    "wallet_of_satoshi @ git+ssh://git@github.com/arjlewis/wallet_of_satoshi",
 ]
