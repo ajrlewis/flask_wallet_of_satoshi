@@ -57,8 +57,7 @@ class WalletOfSatoshi:
         if not username:
             return jsonify({"error": "Wallet of Satoshi username not configured."}), 500
 
-        display_name = self.app.config.get("WOS_METADATA_PLAIN")
-        self.wallet = _WalletOfSatoshi(username, display_name)
+        self.wallet = _WalletOfSatoshi(username)
 
     def lnurl_pay(self):
         """
