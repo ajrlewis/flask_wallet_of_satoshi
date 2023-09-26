@@ -1,7 +1,7 @@
 [project]
 name = "flask_wallet_of_satoshi"
 description = "Flask extension for Wallet of Satoshi"
-version = "0.1.0"
+version = "0.2.0"
 readme = "README.md"
 authors = [
     { name = "ajrlewis", email = "hello@ajrlewis.com" }
