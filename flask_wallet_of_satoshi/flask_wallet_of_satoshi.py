@@ -15,7 +15,7 @@ class WalletOfSatoshi:
             app: Flask application object (optional).
         """
         self.app = app
-        self.wallet = None
+        self._wallet = None
 
         if app is not None:
             self.init_app(app)
@@ -28,25 +28,11 @@ class WalletOfSatoshi:
             app: Flask application object.
         """
         self.app = app
-        app.route("/.well-known/lnurlp/pay")(self.lnurl_pay)
-        app.route("/lightning/payment-request")(self.payment_request)
+        self._set_wallet()
+        app.route("/.well-known/lnurlp/pay")(self.well_known)
+        app.route(f"/lightning/lnurl/pay/{self.username_alias}")(self.pay_request)
 
-        @app.errorhandler(500)
-        def handle_error(error):
-            """
-            Error handler for 500 Internal Server Error.
-
-            Args:
-                error: The error object.
-
-            Returns:
-                A JSON response with the error message and status code 500.
-            """
-            return jsonify({"error": "Wallet of Satoshi username not configured."}), 500
-
-        self.set_wallet()
-
-    def set_wallet(self):
+    def _set_wallet(self):
         """
         Sets up the Wallet of Satoshi instance.
 
@@ -54,37 +40,43 @@ class WalletOfSatoshi:
             A JSON response with the error message and status code 500 if the username is not configured.
         """
         username = self.app.config.get("WOS_USERNAME")
+        username_alias = self.app.config.get("WOS_USERNAME_ALIAS")
         if not username:
             return jsonify({"error": "Wallet of Satoshi username not configured."}), 500
 
-        self.wallet = _WalletOfSatoshi(username)
+        self._wallet = _WalletOfSatoshi(username)
 
-    def lnurl_pay(self):
+    def well_known(self):
         """
-        Handles the lnurlp/pay route.
+        Handles the lnurlp/pay/<username_alias> route.
 
         Returns:
             A JSON response with the lnurlp data.
         """
-        if not self.wallet:
+        if not self._wallet:
             return jsonify({"error": "Wallet not initialized."}), 500
 
-        lnurlp = self.wallet.well_known()
-        return jsonify(lnurlp)
+        data = self._wallet.well_known()
+        return jsonify(data)
 
-    def payment_request(self):
+    def pay_request(self):
         """
-        Handles the lightning/payment-request route.
+        Handles the lightning/lnurl/pay route.
 
         Returns:
             The payment request.
         """
-        if not self.wallet:
+        if not self._wallet:
             return jsonify({"error": "Wallet not initialized."}), 500
 
         amount = request.args.get("amount")
         if not amount:
-            return jsonify({"error": "Amount parameter in mSatoshis is missing."}), 400
+            return (
+                jsonify(
+                    {"error": "Integer amount parameter in millisatoshis is missing."}
+                ),
+                400,
+            )
 
-        pr = self.wallet.payment_request(amount=amount)
-        return pr
+        data = self._wallet.pay_request(amount=amount)
+        return data
