@@ -2,6 +2,8 @@
 
 ![My Project Logo](images/logo.png)
 
+A Flask wrapper for the WalletOfSatoshi package.
+
 ## Installation
 
 Install via pip:
