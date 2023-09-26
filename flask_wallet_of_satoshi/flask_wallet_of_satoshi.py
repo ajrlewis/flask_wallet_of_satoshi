@@ -28,6 +28,7 @@ class WalletOfSatoshi:
             app: Flask application object.
         """
         self.app = app
+        self.username_alias = self.app.config.get("WOS_USERNAME_ALIAS")
         self._set_wallet()
         app.route("/.well-known/lnurlp/pay")(self.well_known)
         app.route(f"/lightning/lnurl/pay/{self.username_alias}")(self.pay_request)
@@ -40,7 +41,6 @@ class WalletOfSatoshi:
             A JSON response with the error message and status code 500 if the username is not configured.
         """
         username = self.app.config.get("WOS_USERNAME")
-        username_alias = self.app.config.get("WOS_USERNAME_ALIAS")
         if not username:
             return jsonify({"error": "Wallet of Satoshi username not configured."}), 500
 
