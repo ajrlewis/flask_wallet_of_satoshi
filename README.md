@@ -39,7 +39,7 @@ def create_app() -> Flask:
 It adds two routes:
 
     1. example.com/.well-known/lnurl/<username-alias>
-    2. example.com/lightning/lnurl/pay
+    2. example.com/lightning/lnurl/pay/<username-alias>?amount=1000
 
 ## License
 
